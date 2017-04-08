@@ -35,7 +35,7 @@ let signup(ctx : HttpContext) = async {
         |> System.Text.Encoding.UTF8.GetString
         |> JsonConvert.DeserializeObject<Domain.Signup>
 
-    use session = store.OpenSession()
+    use session = store.LightweightSession()
     let user = session.Query<User>().Where(fun x -> x.Username = signup.Username)
     if user.Count() <> 0 then
         return! CONFLICT ("That username is taken. Please try another one.") ctx
